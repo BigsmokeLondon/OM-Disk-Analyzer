@@ -1,0 +1,6 @@
+dist/
+shots/
+__pycache__/
+*.pyc
+.build/
+_test_*/
