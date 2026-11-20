@@ -23,7 +23,7 @@ DIST = os.path.join(APP, "dist")
 WORK = os.path.join(APP, ".build")
 SOURCE = ["main.py", "omdisk.py", "omdisk_app.py", "omdisk_settings.py", "om_install.py", "installer.py",
           "README.md", "tools/make_assets.py", "tools/build_all.py", "tools/build_mac.sh",
-          ".github/workflows/build.yml"]
+          "tools/build_mac_on_github.ps1", "Build Mac versions.cmd", ".github/workflows/build.yml"]
 
 
 def pyinstaller(script, name, extra):

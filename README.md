@@ -13,7 +13,10 @@ and an optional File Explorer right-click menu.
 | `OM Disk Analyzer 1.2 - source code.zip` | All source code and logos. |
 
 ### macOS (Intel and Apple Silicon)
-Mac programs must be built on a Mac. Two ways:
+Mac programs must be built on a Mac. The easiest way from Windows: double-click
+**`Build Mac versions.cmd`**. It uploads the app to a private repository in your GitHub account, lets GitHub's
+Macs build both installers and puts `OM Disk Analyzer 1.2 macOS Intel.dmg` and
+`OM Disk Analyzer 1.2 macOS Apple Silicon.dmg` into `dist/` (about 10 minutes). Other ways:
 * **GitHub (no Mac needed):** put this folder in a GitHub repository, open *Actions > Build OM Disk Analyzer >
   Run workflow*. It builds `OM Disk Analyzer 1.2 macOS Intel.dmg` and `... macOS Apple Silicon.dmg`
   (and the Windows files) and offers them under *Artifacts*.
