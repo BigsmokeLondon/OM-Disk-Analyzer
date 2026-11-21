@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "values": [
+    {"name": "allocated space rule", "group": "sizes", "value": "ceil(size / cluster) * cluster", "source": "function 0x5eacc4"},
+    {"name": "compressed or sparse file allocation", "group": "sizes", "value": "GetCompressedFileSizeW rounded up to clusters", "source": "function 0x5eacc4 via 0x6117c4"},
+    {"name": "default tree value", "group": "view", "value": "Allocated", "source": "function 0x810220 ([esi+0xE0] = 3, vt_alloc)"},
+    {"name": "default unit", "group": "view", "value": "MB", "source": "function 0x810220 ([esi+0xE1] = 2, Mega)"},
+    {"name": "default sort", "group": "view", "value": "size", "source": "function 0x810220 ([esi+0xE3] = 1, stSize)"},
+    {"name": "decimals", "group": "view", "value": 1, "source": "settings type table 0x80ef00 (Decimals)"},
+    {"name": "bold threshold", "group": "tree", "value": 15, "unit": "% of scanned folder", "source": "function 0x810220 ([esi+0xDC] = 15)"},
+    {"name": "bar gradient start", "group": "tree", "value": "#FFFF64", "source": "function 0x810220 ([esi+0xF8] = $0064FFFF)"},
+    {"name": "bar gradient end", "group": "tree", "value": "#FF6400", "source": "function 0x810220 ([esi+0xFC] = $000064FF)"},
+    {"name": "largest files listed", "group": "statistics", "value": 100, "unit": "files", "source": "function 0x810220 ([esi+0xB8] = 0x64)"},
+    {"name": "age intervals", "group": "statistics", "value": "1, 7, 30, 182, 365, 730", "unit": "days", "source": "function 0x816710"},
+    {"name": "default age basis", "group": "statistics", "value": "Last Change Date", "source": "settings type table 0x80ef00 (FileAgesDateType = 1)"},
+    {"name": "follow links by default", "group": "scan", "value": false, "source": "settings type table 0x80ef00 (FollowReparsePoints = 0)"},
+    {"name": "files line only with subfolders", "group": "tree", "value": true, "source": "settings type table 0x80ef00 (AlwaysCreateFilesItem = 0)"},
+    {"name": "scan thread priority", "group": "scan", "value": "lower", "source": "function 0x810220 ([esi+0xF4] = tpLower)"},
+    {"name": "bar shading start", "group": "tree", "value": 0.4, "unit": "share of bar", "estimated": true},
+    {"name": "age bucket boundary", "group": "statistics", "value": "age < limit", "estimated": true}
+  ]
+}

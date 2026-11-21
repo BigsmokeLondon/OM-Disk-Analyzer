@@ -1,54 +1,66 @@
-# OM Disk Analyzer Professional — OM Industries Inc
+# OM Disk Analyzer Professional 2.0 — OM Industries Inc
 
-A disk space analyzer for Windows: folder tree with size bars, drive list, charts, treemap,
-file types, owners, age of files, largest files, scan history, search, CSV export, Options
-and an optional File Explorer right-click menu.
+See what is using space on your drives. OM Disk Analyzer scans a drive or folder and shows every
+folder with its size and a size bar, biggest first, with charts, a treemap, file types, owners,
+age of files, the 100 largest files and a history of earlier scans. You can open, export or
+delete what you find.
 
-## The finished files (in `dist/`)
+![OM Disk Analyzer](docs/images/main-window.png)
+
+## Features
+* **Folder tree** with size bars: size, allocated space, file count or percent; KB/MB/GB/Auto
+* **Drive list** with free space
+* **Details** list of a folder's subfolders and files, sortable, with owners and dates
+* **Chart**, **Treemap**, **Extensions**, **Users**, **Age of Files**, **Top 100 Files**, **History** tabs
+* **Search** files by name or pattern and size
+* **Delete** folders and files (Recycle Bin or permanently), in administrator mode
+* Starts as **administrator** automatically for administrator accounts (optional)
+* **Export to CSV** for Excel
+* **File Explorer** right-click menu "Scan with OM Disk Analyzer"
+* **Setup** (per user, no admin rights) and a **portable** copy for USB sticks
+* No internet connection, no account, no runtime to install
+
+## Download / finished files (in `dist/`)
 | File | Use it for |
 |---|---|
-| `OM Disk Analyzer 1.2 Setup.exe` | Windows installer: Start menu entry (and optional desktop shortcut), uninstaller in Start menu and Settings > Apps. Installs for your user only, no admin rights. |
-| `OM Disk Analyzer 1.2 Portable.zip` | Portable: unzip anywhere (USB stick too); settings stay in its `Data` folder; delete the folder to remove. |
-| `OM Disk Analyzer.exe` | The program on its own. |
-| `OM Disk Analyzer 1.2 - source code.zip` | All source code and logos. |
+| `OM Disk Analyzer 2.0 Setup.exe` | Installer: Start menu entry (desktop shortcut optional), uninstall from the Start menu or Settings > Apps. Replaces an installed 1.2. |
+| `OM Disk Analyzer 2.0 Portable.zip` | Unzip anywhere; settings and history stay in its `Data` folder. |
+| `OM Disk Analyzer 2.0.exe` | The program on its own. |
+| `OM Disk Analyzer 2.0 - source code.zip` | Source code, logos and documents. |
+| `OM Disk Analyzer 2.0 macOS Apple Silicon.dmg` | Mac with an M1 or later chip: open, drag to Applications. |
+| `OM Disk Analyzer 2.0 macOS Intel.dmg` | Mac with an Intel chip. |
+| `OM Disk Analyzer 1.2 ...` | The earlier Python version (source in `python-version/`). |
 
-### macOS (Intel and Apple Silicon)
-Mac programs must be built on a Mac. The easiest way from Windows: double-click
-**`Build Mac versions.cmd`**. It uploads the app to a private repository in your GitHub account, lets GitHub's
-Macs build both installers and puts `OM Disk Analyzer 1.2 macOS Intel.dmg` and
-`OM Disk Analyzer 1.2 macOS Apple Silicon.dmg` into `dist/` (about 10 minutes). Other ways:
-* **GitHub (no Mac needed):** put this folder in a GitHub repository, open *Actions > Build OM Disk Analyzer >
-  Run workflow*. It builds `OM Disk Analyzer 1.2 macOS Intel.dmg` and `... macOS Apple Silicon.dmg`
-  (and the Windows files) and offers them under *Artifacts*.
-* **On a Mac:** install Python 3.12+ from python.org, then run `bash tools/build_mac.sh arm64` or
-  `bash tools/build_mac.sh x86_64`.
+Windows may warn about an unknown publisher until the files are signed: click
+**More info > Run anyway**. On a Mac, right-click the app and choose **Open** the first time.
+Releases are on the repository's **Releases** page, and the program tells you when a newer one is out.
 
-The Mac app is not signed with an Apple Developer ID, so the first time, right-click it and choose *Open*.
-On a Mac the File Explorer menu option is not available; everything else works the same.
-
-## Run from the source code
-The program is written in Python 3 (3.12 or newer) using only its standard library (tkinter).
-
-    python main.py              # open the window
-    python main.py "D:\Photos"  # open and scan a folder
-
-## Files
-| File | What it holds |
+## Documents
+| Document | For |
 |---|---|
-| `main.py` | Starts the program |
-| `omdisk.py` | Scanner, size-bar folder tree, colours, logo loading, screenshots |
-| `omdisk_app.py` | Main window: toolbar, tabs, charts, history, search, export |
-| `omdisk_settings.py` | Options window, saved settings, File Explorer menu |
-| `assets/` | OM Industries logos at ready-made sizes |
-| `tools/make_assets.py` | Rebuilds `assets/` from the logo pack (needs Pillow) |
-| `om_install.py`, `installer.py` | Windows setup program and uninstaller |
-| `tools/build_all.py` | Builds all Windows files above (needs PyInstaller) |
-| `tools/build_mac.sh`, `.github/workflows/build.yml` | Mac build script and the GitHub build |
+| [User Guide](docs/USER_GUIDE.md) | Everything the program does, step by step, with shortcuts |
+| [Installing and removing](docs/INSTALLING.md) | Setup, portable copy, uninstalling, updating |
+| [Troubleshooting and FAQ](docs/TROUBLESHOOTING.md) | Common questions and fixes |
+| [Privacy and security](docs/PRIVACY.md) | What it reads, stores and changes |
+| [Code signing](docs/CODE_SIGNING.md) | Getting a certificate and signing the files |
+| [Developer guide](docs/DEVELOPER_GUIDE.md) | Building, packaging, command line, how the code is organised |
+| [Mac tester guide](docs/MAC_TESTER_GUIDE.md) | What to try and what to report on a Mac |
+| [Mechanics sheet](MECHANICS.md) | Rules and defaults taken from the reference program's code |
+| [Changelog](CHANGELOG.md) | What changed in each version |
+| [License](LICENSE.md) | Terms of use |
 
-Settings and scan history are kept in `%APPDATA%\OM Industries Inc\OM Disk Analyzer` on Windows,
-`~/Library/Application Support/OM Industries Inc/OM Disk Analyzer` on a Mac, or in the `Data`
-folder of the portable copy.
+## Quick start for developers
+    cargo build --release                # target\release\om-disk-analyzer.exe
+    cargo test
+    .\tools\package.ps1                   # all finished files into dist\
+    .\tools\package.ps1 -Pfx cert.pfx     # ...signed
+    bash tools/build_mac.sh               # on a Mac: .app and .dmg for this chip
 
-## Rebuild the Windows files
-    pip install pyinstaller
-    python tools/build_all.py
+    # Publish: .\tools\Link_To_GitHub.ps1 once, then  git tag v2.0.0  and  git push origin v2.0.0
+    # GitHub builds Windows and Mac and creates the release (.github/workflows/build.yml)
+
+Requires Windows 10/11 or macOS 11+ and Rust from <https://rustup.rs>. See the
+[Developer guide](docs/DEVELOPER_GUIDE.md).
+
+---
+© 2026 OM Industries Inc. All rights reserved.

@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 .build/
 _test_*/
+target/
