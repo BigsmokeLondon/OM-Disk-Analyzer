@@ -17,7 +17,11 @@ const UNINSTALL_KEY: &str = r"HKCU\Software\Microsoft\Windows\CurrentVersion\Uni
 const INFO_FILE: &str = "install.json";
 
 pub fn short_version() -> String {
-    let v = crate::VERSION;
+    shorten(crate::VERSION)
+}
+
+/// "2.0.0" is shown as "2.0"; a real patch number stays: "2.0.1".
+fn shorten(v: &str) -> String {
     v.strip_suffix(".0").unwrap_or(v).to_string()
 }
 
@@ -534,6 +538,18 @@ mod tests {
         make_shortcut(&lnk, &target, "--uninstall", "test").unwrap();
         assert!(lnk.is_file());
         std::fs::remove_dir_all(&dir).unwrap();
-        assert_eq!(short_version(), "2.0");
+    }
+}
+
+#[cfg(test)]
+mod version_tests {
+    use super::*;
+    #[test]
+    fn versions_are_shortened() {
+        assert_eq!(shorten("2.0.0"), "2.0");
+        assert_eq!(shorten("2.0.1"), "2.0.1");
+        assert_eq!(shorten("2.1.0"), "2.1");
+        assert_eq!(shorten("2.0.10"), "2.0.10");
+        assert_eq!(short_version(), shorten(env!("CARGO_PKG_VERSION")));
     }
 }
