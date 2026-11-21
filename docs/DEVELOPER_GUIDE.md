@@ -32,22 +32,24 @@ Apple notarization needs an Apple Developer account and isn't set up (see
 ## Releases
 `.github/workflows/build.yml` runs the tests and builds Windows (`tools/package.ps1`) and both Mac
 chips on GitHub's computers. Run it by hand from the Actions tab, or push a tag
-(`git tag v2.0.0 && git push origin v2.0.0`) to also create the GitHub Release with all files.
-`tools/Link_To_GitHub.ps1` creates the private `OM-Disk-Analyzer` repository the first time.
+(`git tag v2.0.1 && git push origin v2.0.1`) to also create the GitHub Release with all files.
+`tools/Link_To_GitHub.ps1` creates the **public** `OM-Disk-Analyzer` repository the first time
+(it asks you to confirm first, because everything pushed becomes readable by anyone).
 
 ## Update check
 `src/update.rs` asks `https://api.github.com/repos/BigsmokeLondon/OM-Disk-Analyzer/releases/latest`
 through the `curl` program (built into Windows 10/11 and macOS) on a background thread, compares the
 tag with `Cargo.toml`'s version and shows a window if it is newer. It reads only the tag name.
-GitHub answers **404 for a private repository**, so the check only works once the releases are
-public (see the note in README). The owner and repository names are constants at the top of the file.
+GitHub answers **404 for a private repository**, so the repository has to be public for this to work.
+The owner and repository names are constants at the top of the file.
 
 ## Packaging
     .\tools\package.ps1 [-Pfx cert.pfx | -Thumbprint <sha1>]
 
 Builds the release program and writes to `dist\`:
-`OM Disk Analyzer <v>.exe`, `<v> Setup.exe` (a copy with "Setup" in its name),
-`<v> Portable.zip` (program, `Data\`, read-me) and `<v> - source code.zip`.
+`<v> Setup.exe` (a copy of the program with "Setup" in its name), `<v> Portable.zip` (program,
+`Data\`, read-me) and `<v> - source code.zip`. A plain `<v>.exe` is built along the way (it is what
+gets signed and goes into the Portable zip) and is removed at the end, so it is not a release file.
 The version comes from `Cargo.toml`.
 
 ## Command line
@@ -81,15 +83,25 @@ The version comes from `Cargo.toml`.
 | `python-version/` | The earlier 1.2 version (Python/tkinter), kept for reference |
 
 ## How a scan works
-1. `scan::start` spawns a thread (priority from Options, default *lower*) and returns a shared
-   `Progress` (atomic counters, current folder, stop flag, result slot).
-2. The thread walks folders depth-first with `std::fs::read_dir`. Directory-entry metadata gives
-   size, times and attributes without opening files. Reparse points are skipped unless
-   *follow links* is on; followed links are de-duplicated by canonical path.
-3. Each file adds to its folder's own totals and to the statistics. Allocated space is
+1. `scan::start` spawns a thread that runs the scan and returns a shared `Progress` (atomic
+   counters, current folder, stop flag, result slot). The scan runs on 1 to 8 worker threads
+   (Options > Scan > *Scanning threads*, default automatic: the number of cores, at most 8; one
+   when *follow links* is on, so the same folder always wins when two paths lead to it). Each
+   worker has the Options priority.
+2. Workers take folders from a shared queue. A worker reads one folder with `std::fs::read_dir`
+   without holding any lock (directory-entry metadata gives size, times and attributes without
+   opening files), then briefly locks the shared node list to add the result and queue the
+   sub-folders. Reparse points are skipped unless *follow links* is on; followed links are
+   de-duplicated by canonical path.
+3. Each file adds to its folder's own totals and to the worker's own statistics (extensions,
+   owners, ages, largest files), added together at the end. Allocated space is
    `ceil(size / cluster) × cluster`; compressed/sparse files use `GetCompressedFileSizeW`.
-4. One backward pass over the node list adds each folder into its parent.
-5. The window polls `Progress` every 100 ms and swaps in the finished tree (`Arc<Vec<Node>>`).
+4. *Count hard links once* (`sys::hard_link_key`: device + inode on a Mac; on Windows the file
+   index, which needs opening each file, so it starts off there): files with several names are
+   held back, sorted by path, and counted once under the first name. Folders' children are then
+   sorted by name. Together this makes the result the same for any thread count.
+5. One backward pass over the node list adds each folder into its parent.
+6. The window polls `Progress` every 100 ms and swaps in the finished tree (`Arc<Vec<Node>>`).
 
 Files themselves aren't kept in the tree (to keep memory low for whole drives); the Details
 list and *Show files in tree* read a folder's files when it is opened and cache them.

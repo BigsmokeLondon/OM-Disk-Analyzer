@@ -13,22 +13,23 @@ delete what you find.
 * **Details** list of a folder's subfolders and files, sortable, with owners and dates
 * **Chart**, **Treemap**, **Extensions**, **Users**, **Age of Files**, **Top 100 Files**, **History** tabs
 * **Search** files by name or pattern and size
-* **Delete** folders and files (Recycle Bin or permanently), in administrator mode
+* **Multi-threaded scanning** (1 to 8 threads) and hard links counted once
+* **Delete** folders and files (Recycle Bin or permanently) on Windows in administrator mode; to the Trash on a Mac
 * Starts as **administrator** automatically for administrator accounts (optional)
 * **Export to CSV** for Excel
-* **File Explorer** right-click menu "Scan with OM Disk Analyzer"
+* **File Explorer** right-click menu "Scan with OM Disk Analyzer" (Windows)
+* **Windows and macOS** versions (Apple Silicon and Intel)
 * **Setup** (per user, no admin rights) and a **portable** copy for USB sticks
-* No internet connection, no account, no runtime to install
+* No account and no runtime to install; the only internet use is an optional check for a newer version
 
 ## Download / finished files (in `dist/`)
 | File | Use it for |
 |---|---|
-| `OM Disk Analyzer 2.0 Setup.exe` | Installer: Start menu entry (desktop shortcut optional), uninstall from the Start menu or Settings > Apps. Replaces an installed 1.2. |
-| `OM Disk Analyzer 2.0 Portable.zip` | Unzip anywhere; settings and history stay in its `Data` folder. |
-| `OM Disk Analyzer 2.0.exe` | The program on its own. |
-| `OM Disk Analyzer 2.0 - source code.zip` | Source code, logos and documents. |
-| `OM Disk Analyzer 2.0 macOS Apple Silicon.dmg` | Mac with an M1 or later chip: open, drag to Applications. |
-| `OM Disk Analyzer 2.0 macOS Intel.dmg` | Mac with an Intel chip. |
+| `OM Disk Analyzer 2.0.1 Setup.exe` | Installer: Start menu entry (desktop shortcut optional), uninstall from the Start menu or Settings > Apps. Replaces an installed 1.2. |
+| `OM Disk Analyzer 2.0.1 Portable.zip` | Unzip anywhere; settings and history stay in its `Data` folder. |
+| `OM Disk Analyzer 2.0.1 - source code.zip` | Source code, logos and documents. |
+| `OM Disk Analyzer 2.0.1 macOS Apple Silicon.dmg` | Mac with an M1 or later chip: open, drag to Applications. |
+| `OM Disk Analyzer 2.0.1 macOS Intel.dmg` | Mac with an Intel chip. |
 | `OM Disk Analyzer 1.2 ...` | The earlier Python version (source in `python-version/`). |
 
 Windows may warn about an unknown publisher until the files are signed: click
@@ -56,7 +57,7 @@ Releases are on the repository's **Releases** page, and the program tells you wh
     .\tools\package.ps1 -Pfx cert.pfx     # ...signed
     bash tools/build_mac.sh               # on a Mac: .app and .dmg for this chip
 
-    # Publish: .\tools\Link_To_GitHub.ps1 once, then  git tag v2.0.0  and  git push origin v2.0.0
+    # Publish: .\tools\Link_To_GitHub.ps1 once, then  git tag v2.0.1  and  git push origin v2.0.1
     # GitHub builds Windows and Mac and creates the release (.github/workflows/build.yml)
 
 Requires Windows 10/11 or macOS 11+ and Rust from <https://rustup.rs>. See the

@@ -6,7 +6,6 @@
 # Makes:
 #   OM Disk Analyzer <v> Setup.exe           installer (current user, no administrator rights)
 #   OM Disk Analyzer <v> Portable.zip        unzip anywhere; settings stay in its Data folder
-#   OM Disk Analyzer <v>.exe                 the program on its own
 #   OM Disk Analyzer <v> - source code.zip   source code and logos
 param([string]$Pfx, [string]$Thumbprint)
 $ErrorActionPreference = "Stop"
@@ -29,7 +28,8 @@ $stage = Join-Path $root "target\package"
 if (Test-Path $stage) { Remove-Item -Recurse -Force $stage }
 New-Item -ItemType Directory -Force $stage | Out-Null
 
-# the same program three ways: a file name containing "Setup" opens the install wizard
+# the same program twice: a file name containing "Setup" opens the install wizard.
+# The plain copy is only used to fill the Portable zip (and to be signed); it is removed below.
 Copy-Item $exe (Join-Path $dist "$name.exe") -Force
 Copy-Item $exe (Join-Path $dist "$name Setup.exe") -Force
 
@@ -65,6 +65,7 @@ Copy-Item (Join-Path $root "CHANGELOG.md") (Join-Path $port "Documents\CHANGELOG
 $zip = Join-Path $dist "$name Portable.zip"
 if (Test-Path $zip) { Remove-Item -Force $zip }
 Compress-Archive -Path $port -DestinationPath $zip
+Remove-Item -Force (Join-Path $dist "$name.exe")   # not a release file: Setup.exe and the Portable zip cover it
 
 # source code
 $src = Join-Path $stage "$name - source code"

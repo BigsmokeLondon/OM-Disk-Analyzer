@@ -21,7 +21,7 @@ Tick each one and note anything odd:
 - [ ] *Reveal in Finder* (right-click a folder) opens Finder with the item selected.
 - [ ] Right-click a **test file you don't mind losing** > Delete > *Move to Trash*. Check it is in the Trash.
 - [ ] *File > Export to CSV* makes a file that opens in Numbers or Excel.
-- [ ] ⌘ shortcuts work where the menus say Ctrl (for example ⌘E for Export).
+- [ ] ⌘ shortcuts work, and the menus and tooltips say ⌘ (for example ⌘E for Export).
 - [ ] Quit and reopen: your settings and the History tab are still there.
 - [ ] *Help > Check for updates...* shows a message and doesn't freeze the window.
 - [ ] Without Full Disk Access, scanning `/Users/<you>` lists some folders under *Show scan errors*.

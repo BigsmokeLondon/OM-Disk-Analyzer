@@ -905,6 +905,28 @@ impl App {
                                 }
                             });
                         });
+                        ui.horizontal(|ui| {
+                            ui.label("Scanning threads");
+                            let label = |n: u32| match n {
+                                0 => format!("Automatic (up to {})", scan::MAX_THREADS),
+                                1 => "1 thread".to_string(),
+                                n => format!("{n} threads"),
+                            };
+                            egui::ComboBox::from_id_salt("threads").selected_text(label(d.threads)).show_ui(ui, |ui| {
+                                for n in 0..=scan::MAX_THREADS as u32 {
+                                    ui.selectable_value(&mut d.threads, n, label(n));
+                                }
+                            });
+                            if d.follow_links {
+                                ui.label(RichText::new("Following links uses one thread.").color(MUTED));
+                            }
+                        });
+                        ui.checkbox(&mut d.hard_links, "Count files with several names (hard links) only once")
+                            .on_hover_text(if cfg!(windows) {
+                                "Gives the true space used, but makes scans slower on Windows."
+                            } else {
+                                "Gives the true space used."
+                            });
                     }
                     2 => {
                         ui.horizontal(|ui| {

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.1 — November 2026
+
+**New**
+* **Multi-threaded scanning:** 1 to 8 threads (Options > Scan, default automatic). The result is the
+  same whatever the number of threads.
+* **Hard links** are counted once (Options > Scan; on by default on a Mac, off by default on
+  Windows because it makes scans slower).
+* Menus and tooltips show ⌘ instead of Ctrl on a Mac.
+
+**Changed**
+* The release no longer includes a separate plain `.exe`: use Setup or the Portable zip.
+
 ## 2.0 — November 2026
 A complete rewrite in Rust: one fast, self-contained program with no runtime to install.
 
@@ -28,9 +40,8 @@ A complete rewrite in Rust: one fast, self-contained program with no runtime to 
 * The *[Files]* line only appears in folders that also have subfolders.
 * Settings are kept in a new file (`settings-v3.json`); the scan history from 1.2 is kept.
 
-**Not in 2.0 yet**
+**Not yet**
 * Linux builds.
-* Counting hard-linked files once, and scanning with several threads.
 
 ## 1.2 — November 2026
 Python/tkinter version with folder tree, drive list, charts, treemap, file types, owners, age of

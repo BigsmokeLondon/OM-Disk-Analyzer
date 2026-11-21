@@ -47,8 +47,15 @@ Close the program and delete `%APPDATA%\OM Industries Inc\OM Disk Analyzer` (or 
 copy's `Data` folder).
 
 ## Does it send anything over the internet?
-No. See [PRIVACY.md](PRIVACY.md).
+Only one small request to GitHub's public release list, when it starts and when you choose
+*Help > Check for updates*, to learn the newest version number. Nothing about your computer or
+files is sent. Turn it off in **Options > Appearance**. See [PRIVACY.md](PRIVACY.md).
 
 ## Does it run on a Mac or Linux?
-Version 2.0 is built and tested for Windows. The source is portable Rust, but Mac and Linux builds
-aren't made or tested yet; version 1.2 (Python) has Mac builds.
+Yes on a Mac: version 2.0 has `.dmg` files for Apple Silicon and Intel (see
+[INSTALLING.md](INSTALLING.md#install-on-a-mac)). The first open needs right-click > **Open**, and
+**Full Disk Access** lets it see every folder. Linux builds aren't made yet.
+
+## On a Mac, why can't I scan some folders?
+macOS protects Mail, Messages, Safari and similar folders. Give OM Disk Analyzer **Full Disk
+Access** in System Settings > Privacy & Security, then restart it.

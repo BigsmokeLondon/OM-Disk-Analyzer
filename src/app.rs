@@ -1153,7 +1153,7 @@ impl App {
     fn menu_bar(&mut self, ui: &mut Ui) {
         egui::MenuBar::new().ui(ui, |ui| {
             ui.menu_button("File", |ui| {
-                if ui.add(Button::new("Select directory...").shortcut_text("Ctrl+O")).clicked() {
+                if ui.add(Button::new("Select directory...").shortcut_text(sys::shortcut("Ctrl+O"))).clicked() {
                     ui.close();
                     self.browse();
                 }
@@ -1167,7 +1167,7 @@ impl App {
                     self.stop_scan();
                 }
                 ui.separator();
-                if ui.add(Button::new("Export to CSV...").shortcut_text("Ctrl+E")).clicked() {
+                if ui.add(Button::new("Export to CSV...").shortcut_text(sys::shortcut("Ctrl+E"))).clicked() {
                     ui.close();
                     self.export_csv();
                 }
@@ -1186,7 +1186,7 @@ impl App {
                     ui.close();
                     self.go_up();
                 }
-                if ui.add(Button::new("Expand two levels").shortcut_text("Ctrl+Plus")).clicked() {
+                if ui.add(Button::new("Expand two levels").shortcut_text(sys::shortcut("Ctrl+Plus"))).clicked() {
                     ui.close();
                     self.expand(2);
                 }
@@ -1194,7 +1194,7 @@ impl App {
                     ui.close();
                     self.expand(64);
                 }
-                if ui.add(Button::new("Collapse all").shortcut_text("Ctrl+Minus")).clicked() {
+                if ui.add(Button::new("Collapse all").shortcut_text(sys::shortcut("Ctrl+Minus"))).clicked() {
                     ui.close();
                     self.collapse_all();
                 }
@@ -1277,7 +1277,7 @@ impl App {
                 }
             });
             ui.menu_button("File Search", |ui| {
-                if ui.add(Button::new("Search files by name...").shortcut_text("Ctrl+F")).clicked() {
+                if ui.add(Button::new("Search files by name...").shortcut_text(sys::shortcut("Ctrl+F"))).clicked() {
                     self.search.open = true;
                     ui.close();
                 }
@@ -1380,23 +1380,23 @@ impl App {
             if ui.add_enabled(self.scanning.is_some(), Button::new("■")).on_hover_text("Stop scan (Esc)").clicked() {
                 self.stop_scan();
             }
-            if ui.button("📂").on_hover_text("Select directory (Ctrl+O)").clicked() {
+            if ui.button("📂").on_hover_text(format!("Select directory ({})", sys::shortcut("Ctrl+O"))).clicked() {
                 self.browse();
             }
             if ui.button("⇧").on_hover_text("Up one level (Backspace)").clicked() {
                 self.go_up();
             }
             ui.separator();
-            if ui.button("⊞").on_hover_text("Expand two levels (Ctrl+Plus)").clicked() {
+            if ui.button("⊞").on_hover_text(format!("Expand two levels ({})", sys::shortcut("Ctrl+Plus"))).clicked() {
                 self.expand(2);
             }
-            if ui.button("⊟").on_hover_text("Collapse all (Ctrl+Minus)").clicked() {
+            if ui.button("⊟").on_hover_text(format!("Collapse all ({})", sys::shortcut("Ctrl+Minus"))).clicked() {
                 self.collapse_all();
             }
-            if ui.button("🔍").on_hover_text("Search files (Ctrl+F)").clicked() {
+            if ui.button("🔍").on_hover_text(format!("Search files ({})", sys::shortcut("Ctrl+F"))).clicked() {
                 self.search.open = true;
             }
-            if ui.button("💾").on_hover_text("Export to CSV (Ctrl+E)").clicked() {
+            if ui.button("💾").on_hover_text(format!("Export to CSV ({})", sys::shortcut("Ctrl+E"))).clicked() {
                 self.export_csv();
             }
             if ui.button("⚙").on_hover_text("Options").clicked() {

@@ -1,21 +1,20 @@
-# Installing and removing OM Disk Analyzer 2.0
+# Installing and removing OM Disk Analyzer 2.0.1
 
 OM Disk Analyzer runs on **Windows 10 and Windows 11** (64-bit) and on **macOS 11 or later**
 (Apple Silicon and Intel). It needs about 20 MB of disk space and nothing else: no .NET, Java or
 other runtime. The Mac steps are in [Install on a Mac](#install-on-a-mac) below.
 
-There are three ways to get it, all in the `dist` folder:
+There are two ways to get it on Windows, both in the `dist` folder (Macs have their own files, see below):
 
 | File | Choose it when |
 |---|---|
-| `OM Disk Analyzer 2.0 Setup.exe` | You want it in the Start menu and in Settings > Apps, like any other program. |
-| `OM Disk Analyzer 2.0 Portable.zip` | You want to run it from a folder or USB stick without installing anything. |
-| `OM Disk Analyzer 2.0.exe` | You only want the program file itself. |
+| `OM Disk Analyzer 2.0.1 Setup.exe` | You want it in the Start menu and in Settings > Apps, like any other program. |
+| `OM Disk Analyzer 2.0.1 Portable.zip` | You want to run it from a folder or USB stick without installing anything. |
 
 ## Install with Setup
 ![Setup](images/setup.png)
 
-1. Double-click **OM Disk Analyzer 2.0 Setup.exe**.
+1. Double-click **OM Disk Analyzer 2.0.1 Setup.exe**.
    * If Windows shows *"Windows protected your PC"*, click **More info**, then **Run anyway**.
      This appears because the file isn't code-signed yet (see [CODE_SIGNING.md](CODE_SIGNING.md)).
 2. Check the folder (normally `C:\Users\<you>\AppData\Local\Programs\OM Disk Analyzer`) and choose
@@ -26,7 +25,7 @@ Setup installs for **your user only** and needs **no administrator rights**. If 
 installed, Setup replaces it in the same place, and your scan history is kept.
 
 ## Use the portable copy
-1. Unzip **OM Disk Analyzer 2.0 Portable.zip** anywhere, for example onto a USB stick.
+1. Unzip **OM Disk Analyzer 2.0.1 Portable.zip** anywhere, for example onto a USB stick.
 2. Open the folder and double-click **OM Disk Analyzer.exe**.
 
 Its settings and scan history stay in the **Data** folder beside it, so nothing is written to the
@@ -38,8 +37,8 @@ Choose the file for your Mac's chip (Apple menu > About This Mac: *Apple M…* m
 
 | File | Mac |
 |---|---|
-| `OM Disk Analyzer 2.0 macOS Apple Silicon.dmg` | M1, M2, M3, M4 and later |
-| `OM Disk Analyzer 2.0 macOS Intel.dmg` | Intel Macs |
+| `OM Disk Analyzer 2.0.1 macOS Apple Silicon.dmg` | M1, M2, M3, M4 and later |
+| `OM Disk Analyzer 2.0.1 macOS Intel.dmg` | Intel Macs |
 
 1. Open the `.dmg` and drag **OM Disk Analyzer** onto **Applications**.
 2. The first time, **right-click** (or Control-click) the app in Applications and choose **Open**,
@@ -75,5 +74,5 @@ OM Disk Analyzer first, or Setup can't replace the program file.
 * Setup and the program are the same file: a copy whose name contains "Setup", or the
   `--setup` option, opens the installer; `--uninstall` removes an installed copy.
 * Installation is per user (`HKCU` uninstall key `OMDiskAnalyzer`, files under `%LOCALAPPDATA%`).
-  For many PCs, copy the portable folder or `OM Disk Analyzer 2.0.exe` to a shared or local
-  folder instead.
+  For many PCs, copy the portable folder (the program inside it is `OM Disk Analyzer.exe`) to a shared or
+  local folder instead.

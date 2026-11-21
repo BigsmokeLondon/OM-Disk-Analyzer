@@ -101,12 +101,6 @@ pub fn default_root() -> String {
     }
 }
 
-/// Whether deleting is offered: on Windows only in administrator mode, elsewhere always
-/// (the Trash can bring anything back).
-pub fn can_delete() -> bool {
-    !cfg!(windows) || is_admin()
-}
-
 #[cfg(windows)]
 fn wide(s: &str) -> Vec<u16> {
     use std::os::windows::ffi::OsStrExt;
@@ -344,6 +338,16 @@ pub fn owner_of(path: &Path) -> String {
         .clone()
 }
 
+/// Keyboard shortcut as this system writes it: "Ctrl+O" becomes "⌘O" on a Mac (the command
+/// key does what Ctrl does elsewhere).
+pub fn shortcut(text: &str) -> String {
+    if cfg!(target_os = "macos") {
+        text.replace("Ctrl+Plus", "⌘+").replace("Ctrl+Minus", "⌘-").replace("Ctrl+", "⌘")
+    } else {
+        text.to_string()
+    }
+}
+
 /// Lower the scanning thread's priority so the computer stays responsive.
 #[cfg(windows)]
 pub fn set_thread_priority(level: i32) {
@@ -518,6 +522,50 @@ pub fn compressed_size(path: &Path) -> Option<u64> {
 #[cfg(not(windows))]
 pub fn compressed_size(_path: &Path) -> Option<u64> {
     None
+}
+
+/// Identity of a file that has more than one name (a hard link), or None for an ordinary file.
+/// Two names of the same file give the same key. On Windows this opens the file, which is why
+/// the scan only asks when "count hard links once" is on.
+#[cfg(windows)]
+pub fn hard_link_key(_md: &std::fs::Metadata, path: &Path) -> Option<(u64, u64)> {
+    use windows_sys::Win32::Foundation::{CloseHandle, INVALID_HANDLE_VALUE};
+    use windows_sys::Win32::Storage::FileSystem::{
+        CreateFileW, GetFileInformationByHandle, BY_HANDLE_FILE_INFORMATION, FILE_FLAG_BACKUP_SEMANTICS, FILE_SHARE_DELETE,
+        FILE_SHARE_READ, FILE_SHARE_WRITE, OPEN_EXISTING,
+    };
+    let w = wide(&path.to_string_lossy());
+    unsafe {
+        let h = CreateFileW(
+            w.as_ptr(),
+            0,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            std::ptr::null(),
+            OPEN_EXISTING,
+            FILE_FLAG_BACKUP_SEMANTICS,
+            std::ptr::null_mut(),
+        );
+        if h == INVALID_HANDLE_VALUE {
+            return None;
+        }
+        let mut info: BY_HANDLE_FILE_INFORMATION = std::mem::zeroed();
+        let ok = GetFileInformationByHandle(h, &mut info);
+        CloseHandle(h);
+        if ok == 0 || info.nNumberOfLinks <= 1 {
+            return None;
+        }
+        Some((info.dwVolumeSerialNumber as u64, ((info.nFileIndexHigh as u64) << 32) | info.nFileIndexLow as u64))
+    }
+}
+
+#[cfg(not(windows))]
+pub fn hard_link_key(md: &std::fs::Metadata, _path: &Path) -> Option<(u64, u64)> {
+    use std::os::unix::fs::MetadataExt;
+    if md.nlink() > 1 {
+        Some((md.dev(), md.ino()))
+    } else {
+        None
+    }
 }
 
 /// Whether this copy runs with administrator rights.
@@ -712,6 +760,17 @@ pub fn can_elevate() -> bool {
 mod tests {
     use super::*;
     #[test]
+    fn shortcuts_are_written_for_the_system() {
+        let (a, b, c) = (shortcut("Ctrl+O"), shortcut("Ctrl+Plus"), shortcut("Ctrl+Minus"));
+        if cfg!(target_os = "macos") {
+            assert_eq!((a.as_str(), b.as_str(), c.as_str()), ("\u{2318}O", "\u{2318}+", "\u{2318}-"));
+        } else {
+            assert_eq!((a.as_str(), b.as_str(), c.as_str()), ("Ctrl+O", "Ctrl+Plus", "Ctrl+Minus"));
+        }
+        assert_eq!(shortcut("F5"), "F5");
+    }
+
+    #[test]
     fn delete_permanently() {
         let dir = std::env::temp_dir().join(format!("om-delete-test-{}", std::process::id()));
         std::fs::create_dir_all(dir.join("sub")).unwrap();
@@ -807,7 +866,6 @@ mod unix_tests {
 
     #[test]
     fn labels_follow_the_system() {
-        assert!(can_delete());
         assert_eq!(default_root(), "/");
         assert_eq!(TRASH_NAME, "Trash");
     }

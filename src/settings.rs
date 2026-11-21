@@ -50,6 +50,11 @@ pub struct Settings {
     pub age_basis: AgeBasis,
     pub age_days: String,
     pub priority: i32,
+    /// Scanning threads: 0 = automatic (up to 8).
+    pub threads: u32,
+    /// Count a file with several names (hard links) once. Free on Mac; on Windows it makes
+    /// scans slower, so it starts off there.
+    pub hard_links: bool,
     pub recent: Vec<String>,
     pub show_drives: bool,
     pub tooltips: bool,
@@ -80,6 +85,8 @@ impl Default for Settings {
             age_basis: AgeBasis::LastChange,
             age_days: "1, 7, 30, 182, 365, 730".into(), // 0x816710
             priority: -1,
+            threads: 0,
+            hard_links: !cfg!(windows),
             recent: Vec::new(),
             show_drives: true,
             tooltips: true,
@@ -135,6 +142,8 @@ impl Settings {
             age_basis: self.age_basis,
             age_days: self.age_days_list(),
             priority: self.priority,
+            threads: self.threads as usize,
+            hard_links: self.hard_links,
         }
     }
 

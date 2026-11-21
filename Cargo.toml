@@ -1,6 +1,6 @@
 [package]
 name = "om-disk-analyzer"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2021"
 description = "OM Disk Analyzer Professional - a disk space analyzer by OM Industries Inc"
 authors = ["OM Industries Inc"]

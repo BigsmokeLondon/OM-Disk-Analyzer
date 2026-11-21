@@ -1,7 +1,7 @@
 # Builds OM Disk Analyzer on GitHub's own Windows and Mac computers.
 #
 #   * Run it by hand: Actions > "Build OM Disk Analyzer" > Run workflow (files appear under "Artifacts").
-#   * Publish a release: push a tag such as v2.0.0 (git tag v2.0.0 && git push origin v2.0.0).
+#   * Publish a release: push a tag such as v2.0.1 (git tag v2.0.1 && git push origin v2.0.1).
 #     That runs the tests, builds everything and creates the GitHub Release with all the files.
 name: Build OM Disk Analyzer
 on:

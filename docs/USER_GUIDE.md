@@ -104,7 +104,7 @@ What the size column shows is chosen on the toolbar:
 | ⏷ | — | Drives and recently scanned folders |
 
 Other menu items: **File > Restart as administrator**, **Tools > Clear scan history**,
-**Tools > Show scan errors**, **Tools > Explorer context menu**, **Help > About**.
+**Tools > Show scan errors**, **Tools > Explorer context menu**, **Help > Check for updates**, **Help > About**.
 
 ## Deleting files and folders
 1. Right-click a folder or file in the tree (or a row in **Details** or **Top 100 Files**) and
@@ -147,7 +147,7 @@ last access.
 | Page | Settings |
 |---|---|
 | **Appearance** | Gradient bars and their two colours; when folder names are bold (% of the scanned folder, % of the parent folder, or MB); blue for compressed folders; the drive list; files in the tree; start as administrator. |
-| **Scan** | Follow symbolic links and junctions; statistics on file extensions; owner statistics for every file (slower); folders to skip and files to count (patterns with `*` and `?`, separated by `;`); scan priority. |
+| **Scan** | Follow symbolic links and junctions; statistics on file extensions; owner statistics for every file (slower); folders to skip and files to count (patterns with `*` and `?`, separated by `;`); scan priority; **scanning threads** (automatic, or 1 to 8: more threads scan big drives faster, especially on SSDs; following links always uses one); **count files with several names (hard links) only once** (on by default on a Mac; off by default on Windows because it makes scans slower). |
 | **Age of Files** | Which date to group by (last access, last change, creation) and the age limits in days (default 1, 7, 30, 182, 365, 730). Takes effect with the next scan. |
 | **Explorer menu** | Add or remove *Scan with OM Disk Analyzer* in File Explorer's right-click menu. |
 
@@ -159,6 +159,8 @@ and choose **Scan with OM Disk Analyzer** (on Windows 11 it's under *Show more o
 added for your user only and removed again by the uninstaller.
 
 ## Keyboard shortcuts
+On a Mac, use ⌘ where this table says Ctrl.
+
 | Keys | Does |
 |---|---|
 | F5 | Scan / refresh |
@@ -174,6 +176,9 @@ added for your user only and removed again by the uninstaller.
 | Del | Delete the selected folder or file |
 
 ## Where settings are kept
+* **Mac:** `~/Library/Application Support/OM Industries Inc/OM Disk Analyzer`. On a Mac, Delete
+  moves items to the Trash, Ctrl shortcuts are **⌘**, and the Explorer menu and administrator
+  mode don't apply.
 * **Installed copy:** `%APPDATA%\OM Industries Inc\OM Disk Analyzer` — `settings-v3.json`
   (settings) and `history.json` (scan history, shared with version 1.2).
 * **Portable copy:** the `Data` folder next to `OM Disk Analyzer.exe`.

@@ -47,5 +47,5 @@ original's virtual addresses.
 
 ## Not taken from the code
 * Bar shading inside one bar (left end at 40 % of the bar's share): *estimated* from the picture.
-* Multi-threaded scanning (`MaximumThreads = 8`): the rebuild scans with one thread.
+* Multi-threaded scanning (`MaximumThreads = 8`): the rebuild offers 1 to 8 threads (default automatic, up to 8); the results are identical for any number.
 * Deleting from the tree (person's request, not in this sheet's original): only in administrator mode; Recycle Bin by default, or permanently.
